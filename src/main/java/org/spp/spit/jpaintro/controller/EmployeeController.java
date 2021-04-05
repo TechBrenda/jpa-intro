@@ -4,9 +4,9 @@ import org.spp.spit.jpaintro.exception.DepartmentNotFoundException;
 import org.spp.spit.jpaintro.exception.EmployeeNotFoundException;
 import org.spp.spit.jpaintro.exception.JobNotFoundException;
 import org.spp.spit.jpaintro.model.Employee;
-import org.spp.spit.jpaintro.model.Project;
-import org.spp.spit.jpaintro.model.Task;
-import org.spp.spit.jpaintro.repository.*;
+import org.spp.spit.jpaintro.repository.DepartmentRepository;
+import org.spp.spit.jpaintro.repository.EmployeeRepository;
+import org.spp.spit.jpaintro.repository.JobRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,21 +20,12 @@ public class EmployeeController {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
     private final JobRepository jobRepository;
-    private final ProjectRepository projectRepository;
-    private final TaskRepository taskRepository;
 
     // Class with single constructor may omit @Autowired annotation.
-    public EmployeeController(
-            EmployeeRepository employeeRepository,
-            DepartmentRepository departmentRepository,
-            JobRepository jobRepository,
-            ProjectRepository projectRepository,
-            TaskRepository taskRepository) {
+    public EmployeeController(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, JobRepository jobRepository) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.jobRepository = jobRepository;
-        this.projectRepository = projectRepository;
-        this.taskRepository = taskRepository;
     }
 
     @GetMapping("/")
@@ -77,18 +68,6 @@ public class EmployeeController {
 
     @DeleteMapping(path = "/{id}")
     public void deleteEmployee(@PathVariable Integer id) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
-        List<Project> projects = projectRepository.findByEmployee_Id(id);
-        for (Project project : projects) {
-            if (project.getEmployees().size() == 1) {
-                project.addEmployee(employeeRepository.findByJob_Id(1));
-            }
-            project.removeEmployee(employee);
-        }
-        List<Task> tasks = taskRepository.findByEmployee_Id(id);
-        for (Task task : tasks) {
-            task.setEmployee(employeeRepository.findByJob_Id(1));
-        }
         employeeRepository.deleteById(id);
     }
 }

@@ -24,6 +24,7 @@ public class Project {
     private Integer id;
     private String title;
     @ManyToMany
+    @JsonBackReference
     private Set<Employee> employees;
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     @JsonManagedReference

@@ -25,6 +25,7 @@ public class Task {
     @JsonBackReference
     private Project project;
     @ManyToOne
+    @JsonBackReference
     private Employee employee;
 
     public Task(String summary, String status, Project project, Employee employee) {

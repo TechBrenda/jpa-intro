@@ -1,11 +1,15 @@
 package org.spp.spit.jpaintro.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
@@ -23,6 +27,12 @@ public class Employee {
     private String hireDate; // not messing with dates for a demo
     @ManyToOne
     private Department department;
+    @ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Project> projects;
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Task> tasks;
     @OneToOne
     private Job job;
 
@@ -44,12 +54,10 @@ public class Employee {
 // OneToOne = may be uni- or bi-directional.
 //      Bidirectional example: Breaking out optional details to separate table when one table gets too many columns.
 //      Unidirectional example: Referencing small categorizing tables used by several other tables.
-//      Very few actual use cases for this.
 
 // MapsId = used with bidirectional OneToOne to indicate the ID field comes from the owning side of the relationship
 //      This annotation goes on the field representing the owning side of the relationship, not the actual ID field.
 //      Cannot use ID generator within a class when using MapsId annotation because ID comes from owning class, not this one.
-//      Hibernate doesn't like this because it gives error about "detached entity cannot persist".
 
 // ManyToMany = When unidirectional, identified on the owning side of the relationship
 //      When bidirectional, identified on both sides of relationship
