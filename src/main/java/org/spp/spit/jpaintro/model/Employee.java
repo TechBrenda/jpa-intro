@@ -25,6 +25,8 @@ public class Employee {
     private Department department;
     @OneToOne
     private Job job;
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private EmployeePrivate employeePrivate;
 
     public Employee(String firstName, String lastName, String hireDate, Department department, Job job) {
         this.firstName = firstName;
@@ -44,12 +46,10 @@ public class Employee {
 // OneToOne = may be uni- or bi-directional.
 //      Bidirectional example: Breaking out optional details to separate table when one table gets too many columns.
 //      Unidirectional example: Referencing small categorizing tables used by several other tables.
-//      Very few actual use cases for this.
 
 // MapsId = used with bidirectional OneToOne to indicate the ID field comes from the owning side of the relationship
 //      This annotation goes on the field representing the owning side of the relationship, not the actual ID field.
 //      Cannot use ID generator within a class when using MapsId annotation because ID comes from owning class, not this one.
-//      Hibernate doesn't like this because it gives error about "detached entity cannot persist".
 
 // ManyToMany = When unidirectional, identified on the owning side of the relationship
 //      When bidirectional, identified on both sides of relationship

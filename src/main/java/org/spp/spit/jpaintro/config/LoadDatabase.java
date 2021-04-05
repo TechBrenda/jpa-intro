@@ -2,6 +2,7 @@ package org.spp.spit.jpaintro.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.spp.spit.jpaintro.model.*;
+import org.spp.spit.jpaintro.model.EmployeePrivate;
 import org.spp.spit.jpaintro.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ public class LoadDatabase {
     CommandLineRunner initDatabase(DepartmentRepository departmentRepository,
                                    JobRepository jobRepository,
                                    EmployeeRepository employeeRepository,
+                                   EmployeePrivateRepository employeePrivateRepository,
                                    ProjectRepository projectRepository,
                                    TaskRepository taskRepository) {
         return args -> {
@@ -51,6 +53,19 @@ public class LoadDatabase {
             log.info("Preloading " + e5);
             Employee e6 = employeeRepository.save(new Employee("Clement", "Williams", "01/01/2021", d2, j6));
             log.info("Preloading " + e6);
+
+            EmployeePrivate ep1 = employeePrivateRepository.save(new EmployeePrivate(e1, 150000, "London"));
+            log.info("Preloading " + ep1);
+            EmployeePrivate ep2 = employeePrivateRepository.save(new EmployeePrivate(e2, 150000, "Sydney"));
+            log.info("Preloading " + ep2);
+            EmployeePrivate ep3 = employeePrivateRepository.save(new EmployeePrivate(e3, 150000, "Tokyo"));
+            log.info("Preloading " + ep3);
+            EmployeePrivate ep4 = employeePrivateRepository.save(new EmployeePrivate(e4, 150000, "Houston"));
+            log.info("Preloading " + ep4);
+            EmployeePrivate ep5 = employeePrivateRepository.save(new EmployeePrivate(e5, 150000, "Paris"));
+            log.info("Preloading " + ep5);
+            EmployeePrivate ep6 = employeePrivateRepository.save(new EmployeePrivate(e6, 150000, "Little Rock"));
+            log.info("Preloading " + ep6);
 
             Project p1 = projectRepository.save(new Project("Budgeting App", new HashSet<>(Arrays.asList(e2, e3, e4, e5))));
             log.info("Preloading " + p1);
